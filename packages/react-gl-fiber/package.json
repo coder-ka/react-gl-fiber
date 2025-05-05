@@ -1,0 +1,57 @@
+{
+  "name": "@coder-ka/react-gl-fiber",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.cjs",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "types",
+    "package.json"
+  ],
+  "scripts": {
+    "build:cjs": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.cjs",
+    "build:esm": "esbuild src/index.ts --bundle --format=esm --outfile=dist/index.mjs",
+    "build": "tsc && npm run build:esm && npm run build:cjs",
+    "build:node:cjs": "npm run build:cjs -- --platform=node",
+    "build:node:esm": "npm run build:esm -- --platform=node",
+    "build:node": "tsc && npm run build:node:esm && npm run build:node:cjs",
+    "watch": "concurrently \"tsc --watch\" \"npm run build:esm -- --watch\" \"npm run build:cjs -- --watch\"",
+    "watch:node": "concurrently \"tsc --watch\" \"npm run build:node:esm -- --watch\" \"npm run build:node:cjs -- --watch\"",
+    "test": "tsx tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coder-ka/react-gl-fiber.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coder-ka/react-gl-fiber/issues"
+  },
+  "homepage": "https://github.com/coder-ka/react-gl-fiber#readme",
+  "devDependencies": {
+    "@types/assert": "^1.5.10",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.0",
+    "@types/react-reconciler": "^0.31.0",
+    "assert": "^2.1.0",
+    "concurrently": "^8.2.2",
+    "esbuild": "^0.25.3",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0"
+  },
+  "dependencies": {
+    "react-reconciler": "^0.32.0"
+  }
+}
