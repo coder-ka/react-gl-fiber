@@ -64,7 +64,7 @@ export class RgfNode<TGLContext> {
       x: this.offset.x + parentOffset.x,
       y: this.offset.y + parentOffset.y,
       z: this.offset.z + parentOffset.z,
-      w: this.offset.w + parentOffset.w,
+      w: this.offset.w * parentOffset.w,
     };
 
     if (this.draw) {
