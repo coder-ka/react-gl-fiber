@@ -14,9 +14,7 @@ export type EventPriority = Lane;
 export function createRenderer<TGLContext>({
   render,
 }: {
-  beforeRender?: (gl: TGLContext) => void;
-  render: (container: Container<TGLContext>) => void;
-  afterRender?: (gl: TGLContext) => void;
+  render?: (container: Container<TGLContext>) => void;
 }) {
   let priority: EventPriority = DefaultEventPriority;
 
@@ -120,7 +118,11 @@ export function createRenderer<TGLContext>({
     afterActiveInstanceBlur(): void {},
 
     resetAfterCommit(containerInfo): void {
-      render(containerInfo);
+      if (render) {
+        render(containerInfo);
+      } else {
+        containerInfo.render();
+      }
     },
 
     startSuspendingCommit() {},

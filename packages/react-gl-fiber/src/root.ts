@@ -11,19 +11,13 @@ export type GLRoot = {
 export function createRoot<TGLContext>(
   gl: TGLContext,
   {
-    beforeRender,
     render,
-    afterRender,
   }: {
-    beforeRender?: (gl: TGLContext) => void;
-    render: (container: Container<TGLContext>) => void;
-    afterRender?: (gl: TGLContext) => void;
+    render?: (container: Container<TGLContext>) => void;
   }
 ): GLRoot {
   const customRenderer = createRenderer<TGLContext>({
-    beforeRender,
     render,
-    afterRender,
   });
 
   const container: Container<TGLContext> = new RgfRootNode<TGLContext>({
