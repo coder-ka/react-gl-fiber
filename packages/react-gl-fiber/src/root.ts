@@ -14,7 +14,7 @@ export function createRoot<TGLContext>(
     render,
   }: {
     render?: (container: Container<TGLContext>) => void;
-  }
+  } = {}
 ): GLRoot {
   const customRenderer = createRenderer<TGLContext>({
     render,
