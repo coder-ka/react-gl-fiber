@@ -1,5 +1,10 @@
-import { RgfNode, useDrawFn, useFrame } from "@coder-ka/react-gl-fiber";
-import { useMemo, useState } from "react";
+import {
+  RgfNode,
+  useCompile,
+  useDrawFn,
+  useFrame,
+} from "@coder-ka/react-gl-fiber";
+import { useState } from "react";
 import { useRegl } from "../regl-example";
 import REGL from "regl";
 
@@ -29,39 +34,45 @@ export function ReglExampleScene() {
     ]);
   }, []);
 
-  const drawTriangle = useMemo(
-    () =>
-      regl<Uniforms, Attributes, Props>({
-        frag: `
+  const drawTriangle = useCompile(() => {
+    const drawTriangle = regl<Uniforms, Attributes, Props>({
+      frag: `
       precision mediump float;
       uniform vec4 color;
       void main() {
         gl_FragColor = color;
       }`,
 
-        vert: `
+      vert: `
       precision mediump float;
       attribute vec2 position;
       void main() {
         gl_Position = vec4(position, 0, 1);
       }`,
 
-        attributes: {
-          position: regl.buffer([
-            [-2, -2],
-            [4, -2],
-            [4, 4],
-          ]),
-        },
+      attributes: {
+        position: regl.buffer([
+          [-2, -2],
+          [4, -2],
+          [4, 4],
+        ]),
+      },
 
-        uniforms: {
-          color: (_, p) => p.color,
-        },
+      uniforms: {
+        color: (_, p) => p.color,
+      },
 
-        count: 3,
-      }),
-    [regl]
-  );
+      count: 3,
+    });
+
+    return {
+      compiled: drawTriangle,
+      dispose() {
+        // @ts-expect-error
+        drawTriangle.destroy();
+      },
+    };
+  }, [regl]);
 
   const draw = useDrawFn(
     () =>
