@@ -1,4 +1,4 @@
-import { createElement, useCallback, useEffect } from "react";
+import { createElement, useCallback, useEffect, useMemo } from "react";
 import { DrawFn } from "./draw-fn";
 import { RgfNodeElementProps } from "./props";
 import { jsxTagName } from "./jsx";
@@ -28,6 +28,24 @@ export function useFrame(
       stop();
     };
   }, deps);
+}
+
+export function useCompile<T>(
+  compileFn: () => {
+    compiled: T;
+    dispose: () => void;
+  },
+  deps: unknown[] = []
+) {
+  const { compiled, dispose } = useMemo(() => compileFn(), deps);
+
+  useEffect(() => {
+    return () => {
+      dispose();
+    };
+  }, deps);
+
+  return compiled;
 }
 
 export function useDrawFn(drawFn: DrawFn, deps: unknown[]) {
