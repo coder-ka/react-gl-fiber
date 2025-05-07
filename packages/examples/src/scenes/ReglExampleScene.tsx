@@ -16,17 +16,19 @@ interface Attributes {
 }
 
 export function ReglExampleScene() {
+  const regl = useRegl();
+
   const [color, setColor] = useState<REGL.Vec4>([0, 0, 0, 0]);
-  useFrame((delta) => {
+  useFrame((_delta) => {
+    const time = regl.now();
     setColor([
-      Math.cos(delta * Math.random() * 100 * 0.001),
-      Math.sin(delta * Math.random() * 100 * 0.0008),
-      Math.cos(delta * Math.random() * 100 * 0.003),
+      Math.cos(time * 1000 * 0.001),
+      Math.sin(time * 1000 * 0.0008),
+      Math.cos(time * 1000 * 0.003),
       1,
     ]);
   }, []);
 
-  const regl = useRegl();
   const drawTriangle = useMemo(
     () =>
       regl<Uniforms, Attributes, Props>({
